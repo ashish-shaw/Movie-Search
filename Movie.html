@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      width: 75%;
+      margin: auto;
+      border-radius: 10px;
+      text-align: center;
+      padding: 50px;
+      background-color: #40c4ff;
+    }
+    #name {
+      width: 30%;
+      line-height: 50px;
+    }
+
+    button {
+      width: 25%;
+      height: 50px;
+      background-color: #37474f;
+      color: cadetblue;
+      font-weight: bolder;
+    }
+    #h {
+      font-size: 100px;
+      /* margin: auto; */
+    }
+    img {
+      width: 40%;
+    }
+  </style>
+  <body>
+    <h1 id="h">Shawflix</h1>
+    <input type="text" id="name" placeholder="Enter Movie Name" />
+    <button onclick="getMovie()">Search</button>
+    <div id="data"><br /><br /></div>
+  </body>
+</html>
+
+<script>
+  let key = "f5cbcb6";
+
+  let dat = document.getElementById("data");
+  async function getMovie() {
+    try {
+      let input = document.getElementById("name").value;
+
+      let url = `http://www.omdbapi.com/?apikey=${key}&t=${input}`;
+
+      let data = await fetch(url);
+      let res = await data.json();
+      console.log(res);
+      if (res.Response == "True") {
+        //getMovie();
+      } else {
+        dikkat();
+      }
+
+      dat.innerHTML = "";
+
+      let title_h1 = document.createElement("h1");
+      title_h1.innerHTML = "Title :- " + res.Title;
+      title_h1.style.color = "#6D8764";
+
+      let genre_p = document.createElement("p");
+      genre_p.innerHTML = "Genre :- " + res.Genre;
+      genre_p.style.fontSize = "22px";
+      genre_p.style.color = "#34465D";
+
+      let year_p = document.createElement("p");
+      year_p.innerHTML = "Year :- " + res.Year;
+      year_p.style.fontSize = "22px";
+
+      let starcast_h3 = document.createElement("h3");
+      starcast_h3.innerHTML = "Starcast :- " + res.Actors;
+      starcast_h3.style.fontSize = "22px";
+      starcast_h3.style.color = "#EE1D51";
+
+      let lang_p = document.createElement("p");
+      lang_p.innerHTML = "Language :- " + res.Language;
+      lang_p.style.fontSize = "22px";
+      lang_p.style.color = "red";
+
+      let plot_p = document.createElement("p");
+      plot_p.innerHTML = "Plot :- " + res.Plot;
+      plot_p.style.fontSize = "24px";
+      plot_p.style.color = "#E4405F";
+
+      let image = document.createElement("img");
+      image.src = res.Poster;
+      image.style.marginTop = "100px";
+
+      let ratings_h2 = document.createElement("h2");
+      ratings_h2.innerHTML = "IMDB Ratings :- " + res.imdbRating + " Stars";
+      ratings_h2.style.fontSize = "22px";
+      ratings_h2.style.color = "#FFFC00";
+
+      if (res.imdbRating > 8.5) {
+        let watch = document.createElement("h2");
+        watch_h2.innerHTML = "Recommended";
+        watch_h2.style.color = "#FFFC00";
+        ratings_h2.append(watch_h2);
+      }
+
+      dat.append(
+        image,
+        title_h1,
+        year_p,
+        genre_p,
+        lang_p,
+        ratings_h2,
+        starcast_h3,
+        plot_p
+      );
+
+      input = document.getElementById("name").value = "";
+    } catch (err) {
+      function dikkat() {
+        dat.innerHTML = "";
+        let show = document.createElement("img");
+        show.src =
+          "https://tse4.mm.bing.net/th?id=OIP.FzKxEyXWT8cEOtVYWsg9xgHaEJ&pid=Api&P=0&w=311&h=176";
+        show.style.marginTop = "50px";
+        dat.append(show);
+      }
+      dikkat();
+    }
+  }
+  getMovie();
+</script>
